@@ -67,7 +67,8 @@ class RouterExtension extends \Twig_Extension
             'current_route'         => new \Twig_Function_Method($this, 'getRoute'),
             'is_current_controller' => new \Twig_Function_Method($this, 'isCurrentController'),
             'is_current_route'      => new \Twig_Function_Method($this, 'isCurrentRoute'),
-            'path'                  => new \Twig_Function_Method($this, 'generateUrl')
+            'path'                  => new \Twig_Function_Method($this, 'generatePath'),
+            'url'                   => new \Twig_Function_Method($this, 'generateUrl')
         );
     }
 
@@ -147,13 +148,23 @@ class RouterExtension extends \Twig_Extension
     /**
      * @param string $name
      * @param array  $parameters
-     * @param bool   $absolute
      *
      * @return string
      */
-    public function generateUrl($name, array $parameters = array(), $absolute = false)
+    public function generatePath($name, array $parameters = array())
     {
-        return $this->container->get('router.url_generator')->generate($name, $parameters, $absolute);
+        return $this->container->get('router.url_generator')->generate($name, $parameters, false);
+    }
+
+    /**
+     * @param string $name
+     * @param array  $parameters
+     *
+     * @return string
+     */
+    public function generateUrl($name, array $parameters = array())
+    {
+        return $this->container->get('router.url_generator')->generate($name, $parameters, true);
     }
 
     /**

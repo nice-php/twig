@@ -78,6 +78,24 @@ class RouterExtensionTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($extension->isCurrentRoute('home'));
         $this->assertFalse($extension->isCurrentRoute('dashboard'));
     }
+
+    /**
+     * Tests generatePath
+     */
+    public function testGeneratePath()
+    {
+        $mockGenerator = $this->getMockForAbstractClass('Nice\Router\UrlGeneratorInterface');
+        $mockGenerator->expects($this->once())->method('generate')
+            ->with('somewhere', array('test' => true), false)
+            ->will($this->returnValue('/somewhere/test'));
+
+        $container = new Container();
+        $container->set('router.url_generator', $mockGenerator);
+
+        $extension = $this->getExtension('/', 'HomeController::indexAction', 'home', $container);
+
+        $this->assertEquals('/somewhere/test', $extension->generatePath('somewhere', array('test' => true)));
+    }
     
     /**
      * Tests generateUrl
@@ -94,7 +112,7 @@ class RouterExtensionTest extends \PHPUnit_Framework_TestCase
         
         $extension = $this->getExtension('/', 'HomeController::indexAction', 'home', $container);
 
-        $this->assertEquals('https://example.com/somewhere/test', $extension->generateUrl('somewhere', array('test' => true), true));
+        $this->assertEquals('https://example.com/somewhere/test', $extension->generateUrl('somewhere', array('test' => true)));
     }
 
     /**
@@ -106,7 +124,7 @@ class RouterExtensionTest extends \PHPUnit_Framework_TestCase
         $functions = $extension->getFunctions();
         $globals   = $extension->getGlobals();
 
-        $this->assertCount(6, $functions);
+        $this->assertCount(7, $functions);
         $this->assertTrue(isset($functions['current_controller']));
         $this->assertTrue(isset($functions['current_action']));
         $this->assertTrue(isset($functions['current_route']));
