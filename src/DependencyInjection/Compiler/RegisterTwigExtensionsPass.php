@@ -20,7 +20,6 @@ class RegisterTwigExtensionsPass implements CompilerPassInterface
         }
 
         $definition = $container->getDefinition('twig');
-
         foreach ($container->findTaggedServiceIds('twig.extension') as $service => $tag) {
             $definition->addMethodCall('addExtension', array(new Reference($service)));
         }

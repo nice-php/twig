@@ -10,6 +10,8 @@
 namespace Nice\Extension;
 
 use Nice\DependencyInjection\Compiler\RegisterTwigExtensionsPass;
+use Nice\DependencyInjection\CompilerAwareExtensionInterface;
+use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\DependencyInjection\Extension\Extension;
@@ -17,7 +19,7 @@ use Symfony\Component\DependencyInjection\Extension\Extension;
 /**
  * Sets up Twig services
  */
-class TwigExtension extends Extension
+class TwigExtension extends Extension implements CompilerAwareExtensionInterface
 {
     /**
      * @var string
@@ -60,7 +62,15 @@ class TwigExtension extends Extension
 
         $container->register('twig', 'Twig_Environment')
             ->addArgument(new Reference('twig.loader'));
+    }
 
-        $container->addCompilerPass(new RegisterTwigExtensionsPass());
+    /**
+     * Gets the CompilerPasses this extension requires.
+     *
+     * @return array|CompilerPassInterface[]
+     */
+    public function getCompilerPasses()
+    {
+        return array(new RegisterTwigExtensionsPass());
     }
 }
