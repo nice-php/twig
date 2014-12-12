@@ -9,6 +9,7 @@
 
 namespace Nice\Extension;
 
+use Nice\DependencyInjection\Compiler\RegisterTwigExtensionsPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\DependencyInjection\Extension\Extension;
@@ -45,19 +46,21 @@ class TwigExtension extends Extension
     {
         $container->register('twig.asset_extension', 'Nice\Twig\AssetExtension')
             ->setPublic(false)
-            ->addArgument(new Reference('service_container'));
+            ->addArgument(new Reference('service_container'))
+            ->addTag('twig.extension');
 
         $container->register('twig.router_extension', 'Nice\Twig\RouterExtension')
             ->setPublic(false)
-            ->addArgument(new Reference('service_container'));
+            ->addArgument(new Reference('service_container'))
+            ->addTag('twig.extension');
 
         $container->setParameter('twig.template_dir', $this->templateDir);
         $container->register('twig.loader', 'Twig_Loader_Filesystem')
             ->addArgument(array('%twig.template_dir%'));
 
         $container->register('twig', 'Twig_Environment')
-            ->addArgument(new Reference('twig.loader'))
-            ->addMethodCall('addExtension', array(new Reference('twig.asset_extension')))
-            ->addMethodCall('addExtension', array(new Reference('twig.router_extension')));
+            ->addArgument(new Reference('twig.loader'));
+
+        $container->addCompilerPass(new RegisterTwigExtensionsPass());
     }
 }
