@@ -27,4 +27,17 @@ class TwigExtensionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('/path', $container->getParameter('twig.template_dir'));
         $this->assertTrue($container->hasDefinition('twig'));
     }
+
+    /**
+     * Test the getCompilerPasses method
+     */
+    public function testGetCompilerPasses()
+    {
+        $extension = new TwigExtension('/path');
+
+        $passes = $extension->getCompilerPasses();
+
+        $this->assertCount(1, $passes);
+        $this->assertInstanceOf('Nice\DependencyInjection\Compiler\RegisterTwigExtensionsPass', $passes[0]);
+    }
 }
