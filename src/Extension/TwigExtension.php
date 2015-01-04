@@ -9,6 +9,7 @@
 
 namespace Nice\Extension;
 
+use Nice\DependencyInjection\Compiler\CacheDataPass;
 use Nice\DependencyInjection\Compiler\RegisterTwigExtensionsPass;
 use Nice\DependencyInjection\CompilerAwareExtensionInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
@@ -71,6 +72,9 @@ class TwigExtension extends Extension implements CompilerAwareExtensionInterface
      */
     public function getCompilerPasses()
     {
-        return array(new RegisterTwigExtensionsPass());
+        return array(
+            new RegisterTwigExtensionsPass(),
+            new CacheDataPass()
+        );
     }
 }

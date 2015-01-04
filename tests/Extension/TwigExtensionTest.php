@@ -37,7 +37,8 @@ class TwigExtensionTest extends \PHPUnit_Framework_TestCase
 
         $passes = $extension->getCompilerPasses();
 
-        $this->assertCount(1, $passes);
+        $this->assertCount(2, $passes);
         $this->assertInstanceOf('Nice\DependencyInjection\Compiler\RegisterTwigExtensionsPass', $passes[0]);
+        $this->assertInstanceOf('Nice\DependencyInjection\Compiler\CacheDataPass', $passes[1]);
     }
 }
