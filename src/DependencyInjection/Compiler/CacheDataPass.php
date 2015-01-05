@@ -24,7 +24,7 @@ class CacheDataPass implements CompilerPassInterface
     public function process(ContainerBuilder $container)
     {
         if ($container->getParameter('app.cache') !== false) {
-            $pathPrefix = '%app.cache_dir%/%app.env%/twig/';
+            $pathPrefix = '%app.cache_dir%/twig/';
 
             $definition = $container->getDefinition('twig');
             $definition->addMethodCall('setCache', array($pathPrefix . 'tpl'));
