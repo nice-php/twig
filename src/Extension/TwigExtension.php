@@ -63,6 +63,11 @@ class TwigExtension extends Extension implements CompilerAwareExtensionInterface
 
         $container->register('twig', 'Twig_Environment')
             ->addArgument(new Reference('twig.loader'));
+
+        $container->register('templating.engine.twig', 'Nice\Templating\TwigEngine')
+            ->addArgument(new Reference('twig'))
+            ->addArgument(new Reference('templating.template_name_parser'))
+            ->addTag('templating.engine');
     }
 
     /**

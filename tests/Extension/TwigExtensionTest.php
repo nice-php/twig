@@ -26,6 +26,7 @@ class TwigExtensionTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals('/path', $container->getParameter('twig.template_dir'));
         $this->assertTrue($container->hasDefinition('twig'));
+        $this->assertTrue($container->hasDefinition('templating.engine.twig'));
     }
 
     /**
@@ -39,6 +40,6 @@ class TwigExtensionTest extends \PHPUnit_Framework_TestCase
 
         $this->assertCount(2, $passes);
         $this->assertInstanceOf('Nice\DependencyInjection\Compiler\RegisterTwigExtensionsPass', $passes[0]);
-        $this->assertInstanceOf('Nice\DependencyInjection\Compiler\CacheDataPass', $passes[1]);
+        $this->assertInstanceOf('Nice\DependencyInjection\Compiler\CacheTwigTemplatesPass', $passes[1]);
     }
 }

@@ -4,6 +4,7 @@
   "license": "MIT",
   "require": {
     "php": ">=5.4.0",
+    "nice/templating": "1.0.x-dev",
     "twig/twig": "~1.15",
     "symfony/config": "~2.3",
     "symfony/dependency-injection": "~2.3"
