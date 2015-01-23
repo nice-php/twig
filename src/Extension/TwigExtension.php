@@ -23,18 +23,31 @@ use Symfony\Component\DependencyInjection\Extension\Extension;
 class TwigExtension extends Extension implements CompilerAwareExtensionInterface
 {
     /**
-     * @var string
+     * @var array
      */
-    protected $templateDir;
+    private $options = array();
 
     /**
      * Constructor
      *
-     * @param string $templateDir
+     * @param array $options
      */
-    public function __construct($templateDir)
+    public function __construct(array $options = array())
     {
-        $this->templateDir = $templateDir;
+        $this->options = $options;
+    }
+
+    /**
+     * Returns extension configuration
+     *
+     * @param array            $config    An array of configuration values
+     * @param ContainerBuilder $container A ContainerBuilder instance
+     *
+     * @return TwigConfiguration
+     */
+    public function getConfiguration(array $config, ContainerBuilder $container)
+    {
+        return new TwigConfiguration();
     }
 
     /**
@@ -47,6 +60,12 @@ class TwigExtension extends Extension implements CompilerAwareExtensionInterface
      */
     public function load(array $config, ContainerBuilder $container)
     {
+        $configs[] = $this->options;
+        $configuration = $this->getConfiguration($configs, $container);
+        $config = $this->processConfiguration($configuration, $configs);
+
+        $container->setParameter('twig.template_dir', $config['template_dir']);
+
         $container->register('twig.asset_extension', 'Nice\Twig\AssetExtension')
             ->setPublic(false)
             ->addArgument(new Reference('service_container'))
@@ -57,11 +76,12 @@ class TwigExtension extends Extension implements CompilerAwareExtensionInterface
             ->addArgument(new Reference('service_container'))
             ->addTag('twig.extension');
 
-        $container->setParameter('twig.template_dir', $this->templateDir);
         $container->register('twig.loader', 'Twig_Loader_Filesystem')
+            ->setPublic(false)
             ->addArgument(array('%twig.template_dir%'));
 
         $container->register('twig', 'Twig_Environment')
+            ->setPublic(false)
             ->addArgument(new Reference('twig.loader'));
 
         $container->register('templating.engine.twig', 'Nice\Templating\TwigEngine')

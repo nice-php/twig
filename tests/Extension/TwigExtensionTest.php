@@ -19,7 +19,9 @@ class TwigExtensionTest extends \PHPUnit_Framework_TestCase
      */
     public function testConfigure()
     {
-        $extension = new TwigExtension('/path');
+        $extension = new TwigExtension(array(
+            'template_dir' => '/path'
+        ));
 
         $container = new ContainerBuilder();
         $extension->load(array(), $container);
@@ -34,7 +36,7 @@ class TwigExtensionTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetCompilerPasses()
     {
-        $extension = new TwigExtension('/path');
+        $extension = new TwigExtension();
 
         $passes = $extension->getCompilerPasses();
 
