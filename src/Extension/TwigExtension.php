@@ -67,25 +67,20 @@ class TwigExtension extends Extension implements CompilerAwareExtensionInterface
         $container->setParameter('twig.template_dir', $config['template_dir']);
 
         $container->register('twig.asset_extension', 'Nice\Twig\AssetExtension')
-            ->setPublic(false)
             ->addArgument(new Reference('service_container'))
             ->addTag('twig.extension');
 
         $container->register('twig.router_extension', 'Nice\Twig\RouterExtension')
-            ->setPublic(false)
             ->addArgument(new Reference('service_container'))
             ->addTag('twig.extension');
 
         $container->register('twig.loader', 'Twig_Loader_Filesystem')
-            ->setPublic(false)
             ->addArgument(array('%twig.template_dir%'));
 
         $container->register('twig', 'Twig_Environment')
-            ->setPublic(false)
             ->addArgument(new Reference('twig.loader'));
 
         $container->register('templating.engine.twig', 'Nice\Templating\TwigEngine')
-            ->setPublic(false)
             ->addArgument(new Reference('twig'))
             ->addArgument(new Reference('templating.template_name_parser'))
             ->addTag('templating.engine');
