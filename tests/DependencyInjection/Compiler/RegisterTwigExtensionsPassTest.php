@@ -10,10 +10,11 @@
 namespace Nice\Tests\Extension;
 
 use Nice\DependencyInjection\Compiler\RegisterTwigExtensionsPass;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
-class RegisterTwigExtensionsPassTest extends \PHPUnit_Framework_TestCase
+class RegisterTwigExtensionsPassTest extends TestCase
 {
     /**
      * Test the RegisterTwigExtensionsPass
@@ -43,7 +44,11 @@ class RegisterTwigExtensionsPassTest extends \PHPUnit_Framework_TestCase
      */
     public function testSilentFailWhenTwigServiceDoesntExist()
     {
-        $container = new ContainerBuilder();
+        $container = $this->getMockBuilder('Symfony\Component\DependencyInjection\ContainerBuilder')
+            ->onlyMethods(['getDefinition'])
+            ->getMock();
+
+        $container->expects($this->never())->method('getDefinition')->with(['twig']);
 
         $container->register('fake.extension', 'FakeExtension')
             ->addTag('twig.extension');

@@ -10,10 +10,11 @@
 namespace Nice\Tests\Twig;
 
 use Nice\Twig\AssetExtension;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpFoundation\Request;
 
-class AssetExtensionTest extends \PHPUnit_Framework_TestCase
+class AssetExtensionTest extends TestCase
 {
     /**
      * Test a simple example

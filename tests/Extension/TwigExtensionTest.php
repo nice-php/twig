@@ -10,9 +10,10 @@
 namespace Nice\Tests\Extension;
 
 use Nice\Extension\TwigExtension;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-class TwigExtensionTest extends \PHPUnit_Framework_TestCase
+class TwigExtensionTest extends TestCase
 {
     /**
      * Test the TwigExtension
