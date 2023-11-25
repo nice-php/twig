@@ -63,13 +63,13 @@ class RouterExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            'current_controller'    => new TwigFunction('getController', [$this, 'getController']),
-            'current_action'        => new TwigFunction('getAction', [$this, 'getAction']),
-            'current_route'         => new TwigFunction('getRoute', [$this, 'getRoute']),
-            'is_current_controller' => new TwigFunction('isCurrentController', [$this, 'isCurrentController']),
-            'is_current_route'      => new TwigFunction('isCurrentRoute', [$this, 'isCurrentRoute']),
-            'path'                  => new TwigFunction('generatePath', [$this, 'generatePath']),
-            'url'                   => new TwigFunction('generateUrl', [$this, 'generateUrl'])
+            new TwigFunction('current_controller', [$this, 'getController']),
+            new TwigFunction('current_action', [$this, 'getAction']),
+            new TwigFunction('current_route', [$this, 'getRoute']),
+            new TwigFunction('is_current_controller', [$this, 'isCurrentController']),
+            new TwigFunction('is_current_route', [$this, 'isCurrentRoute']),
+            new TwigFunction('path', [$this, 'generatePath']),
+            new TwigFunction('url', [$this, 'generateUrl'])
         );
     }
 

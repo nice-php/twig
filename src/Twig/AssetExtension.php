@@ -10,6 +10,7 @@
 namespace Nice\Twig;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Twig\TwigFunction;
 
 class AssetExtension extends \Twig_Extension
 {
@@ -36,7 +37,7 @@ class AssetExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            new \Twig_SimpleFunction('asset', array($this, 'getAssetUrl'))
+            new TwigFunction('asset', array($this, 'getAssetUrl'))
         );
     }
 
