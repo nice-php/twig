@@ -10,11 +10,12 @@
 namespace Nice\Tests\Twig;
 
 use Nice\Twig\RouterExtension;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\Scope;
 use Symfony\Component\HttpFoundation\Request;
 
-class RouterExtensionTest extends \PHPUnit_Framework_TestCase
+class RouterExtensionTest extends TestCase
 {
     /**
      * Tests getCurrentController
@@ -139,19 +140,6 @@ class RouterExtensionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Tests that an exception is thrown when the request service is unavailable
-     */
-    public function testCannotGetRequest()
-    {
-        $container = new Container();
-        $extension = new RouterExtension($container);
-        
-        $this->setExpectedException('RuntimeException', 'Unable to get "request" service');
-        
-        $extension->getController();
-    }
-
-    /**
      * @param string $uri The URI to give to the request
      *
      * @return RouterExtension
@@ -164,8 +152,6 @@ class RouterExtensionTest extends \PHPUnit_Framework_TestCase
         $container = $container ?: new Container();
         $container->set('request', $request);
         $container->set('app', new \stdClass());
-        $container->addScope(new Scope('request'));
-        $container->enterScope('request');
 
         return new RouterExtension($container);
     }

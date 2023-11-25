@@ -11,6 +11,7 @@ namespace Nice\Twig;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Twig\TwigFunction;
 
 class RouterExtension extends \Twig_Extension
 {
@@ -62,13 +63,13 @@ class RouterExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            'current_controller'    => new \Twig_Function_Method($this, 'getController'),
-            'current_action'        => new \Twig_Function_Method($this, 'getAction'),
-            'current_route'         => new \Twig_Function_Method($this, 'getRoute'),
-            'is_current_controller' => new \Twig_Function_Method($this, 'isCurrentController'),
-            'is_current_route'      => new \Twig_Function_Method($this, 'isCurrentRoute'),
-            'path'                  => new \Twig_Function_Method($this, 'generatePath'),
-            'url'                   => new \Twig_Function_Method($this, 'generateUrl')
+            'current_controller'    => new TwigFunction('getController', [$this, 'getController']),
+            'current_action'        => new TwigFunction('getAction', [$this, 'getAction']),
+            'current_route'         => new TwigFunction('getRoute', [$this, 'getRoute']),
+            'is_current_controller' => new TwigFunction('isCurrentController', [$this, 'isCurrentController']),
+            'is_current_route'      => new TwigFunction('isCurrentRoute', [$this, 'isCurrentRoute']),
+            'path'                  => new TwigFunction('generatePath', [$this, 'generatePath']),
+            'url'                   => new TwigFunction('generateUrl', [$this, 'generateUrl'])
         );
     }
 
@@ -173,11 +174,7 @@ class RouterExtension extends \Twig_Extension
     protected function getCurrentRequest()
     {
         if (!$this->request) {
-            if ($this->container->isScopeActive('request')) {
-                $this->request = $this->container->get('request');
-            } else {
-                throw new \RuntimeException('Unable to get "request" service');
-            }
+            $this->request = $this->container->get('request');
         }
 
         return $this->request;
